@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Automazione Serra</title>
+<link rel="stylesheet" href="/style.css">
+</head>
+<body>
+  <main class="container">
+    <header>
+      <h1>Automazione Serra</h1>
+    </header>
+
+    <section class="sensors">
+      <!-- sensore temperatura -->
+      <div class="sensor temp">
+        <div class="icon" aria-hidden="true">🌡️</div>
+        <div id="temp" class="value">--°C</div>
+        <div class="label">Temperatura</div>
+      </div>
+
+      <!-- sensore umidità -->
+      <div class="sensor hum">
+        <div class="icon" aria-hidden="true">💧</div>
+        <div id="hum" class="value">--%</div>
+        <div class="label">Umidità</div>
+      </div>
+    </section>
+
+    <section class="controls">
+      <div class="btn-wrap" id="startWrap">
+        <button id="start" class="btn-irrigare" aria-label="Irrigare">Irrigare</button>
+        <div id="ring" class="ring" aria-hidden="true"></div>
+      </div>
+
+      <div class="time-block" aria-label="Impostazioni tempo">
+        <div class="time-item">
+          <label class="time-label">Tempo irrigazione (s)</label>
+          <button id="timeBtn" class="btn-save time-value" aria-haspopup="dialog" aria-controls="timeModal">5 s</button>
+        </div>
+        <div class="time-item">
+          <label class="time-label">Intervallo tra irrigazioni (min)</label>
+          <button id="intervalBtn" class="btn-save time-value" aria-haspopup="dialog" aria-controls="intervalModal">5 min</button>
+        </div>
+      </div>
+
+      <!-- countdown + progress -->
+      <div class="next-block" aria-live="polite">
+        <div id="nextText" class="next-text">Prossima irrigazione tra --:--:--</div>
+        <div class="progress"><div id="progressBar" class="progress-bar" style="width:100%"></div></div>
+      </div>
+
+      <p id="msg" class="msg"></p>
+    </section>
+  </main>
+
+  <!-- Modal tempo -->
+  <div id="timeModal" class="modal" role="dialog" aria-modal="true" aria-hidden="true" hidden>
+    <div class="modal-backdrop"></div>
+    <div class="modal-panel" role="document">
+      <h2 class="modal-title">Imposta tempo irrigazione (s)</h2>
+      <div class="modal-body">
+        <input id="timeInputModal" type="number" inputmode="numeric" pattern="[0-9]*" min="1" max="3600" />
+      </div>
+      <div class="modal-actions">
+        <button id="timeCancel" class="btn-cancel">Annulla</button>
+        <button id="timeOk" class="btn-save">OK</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal intervallo (minuti) -->
+  <div id="intervalModal" class="modal" role="dialog" aria-modal="true" aria-hidden="true" hidden>
+    <div class="modal-backdrop"></div>
+    <div class="modal-panel" role="document">
+      <h2 class="modal-title">Imposta intervallo tra irrigazioni (min)</h2>
+      <div class="modal-body">
+        <input id="intervalInputModal" type="number" inputmode="numeric" pattern="[0-9]*" min="1" max="1440" />
+      </div>
+      <div class="modal-actions">
+        <button id="intervalCancel" class="btn-cancel">Annulla</button>
+        <button id="intervalOk" class="btn-save">OK</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="/app.js"></script>
+</body>
+</html>

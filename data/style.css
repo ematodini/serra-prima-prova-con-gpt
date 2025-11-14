@@ -1,0 +1,309 @@
+:root{
+  --bg:#000;
+  --text:#fff;
+  --accent:#007bff;
+  --muted:#bfbfbf;
+}
+
+*{box-sizing:border-box}
+html,body{height:100%}
+body{
+  margin:0;
+  background:var(--bg);
+  color:var(--text);
+  font-family:system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+  -webkit-font-smoothing:antialiased;
+  -webkit-text-size-adjust:100%;
+}
+
+.container{
+  min-height:100vh;
+  display:flex;
+  flex-direction:column;
+  justify-content:flex-start;
+  align-items:center;
+  gap:18px;
+  padding:48px 20px 20px; /* aumentato padding-top per più spazio sopra il titolo */
+  text-align:center;
+}
+
+h1{
+  margin:0;
+  font-size:26px;            /* aumentato */
+  font-weight:800;           /* più marcato */
+  color:var(--text);
+  letter-spacing:0.6px;
+  text-transform:uppercase;
+  text-shadow: 0 6px 24px rgba(0,123,255,0.06), 0 1px 0 rgba(255,255,255,0.02);
+  padding:6px 12px;
+  border-radius:8px;
+}
+
+/* forza i sensori sulla stessa riga e riduce ingombro verticale */
+.sensors{
+  display:flex;
+  flex-direction:row;    /* sempre in orizzontale */
+  flex-wrap:nowrap;      /* non andare a capo se possibile */
+  gap:12px;
+  align-items:center;
+  justify-content:center;
+  margin-top:6px;        /* meno spazio verticale */
+}
+
+/* sensor: icona, valore, label */
+.sensor{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:6px;
+  padding:10px 14px;
+  border-radius:12px;
+  width:140px;
+  transition:transform .12s ease, box-shadow .12s ease;
+  border:1px solid rgba(255,255,255,0.02);
+  background: linear-gradient(180deg, rgba(255,255,255,0.012), rgba(255,255,255,0.002));
+}
+.sensor .icon{
+  font-size:20px;
+  opacity:0.95;
+  filter: drop-shadow(0 3px 8px rgba(0,0,0,0.6));
+}
+.sensor .value{
+  font-size:36px;
+  font-weight:900;
+  color:var(--text);
+  line-height:1;
+}
+.sensor .label{
+  font-size:13px;
+  font-weight:700;
+  color:var(--muted);
+  letter-spacing:0.4px;
+  text-transform:uppercase;
+}
+
+/* temperature styling */
+.sensor.temp{
+  box-shadow: 0 8px 26px rgba(255,80,0,0.04), inset 0 -6px 24px rgba(255,80,0,0.02);
+  border: 1px solid rgba(255,80,0,0.06);
+}
+.sensor.temp .icon{ color: #ff7a33; }
+.sensor.temp .value{ color: #ffb07a; }
+
+/* humidity styling */
+.sensor.hum{
+  box-shadow: 0 8px 26px rgba(0,123,255,0.04), inset 0 -6px 24px rgba(0,123,255,0.02);
+  border: 1px solid rgba(0,123,255,0.06);
+}
+.sensor.hum .icon{ color: #33b5ff; }
+.sensor.hum .value{ color: #9fdcff; }
+
+/* .updated applies to .value elements to trigger glow/motion */
+.value.updated{
+  transform: translateY(-4px) scale(1.02);
+  text-shadow: 0 8px 28px rgba(0,123,255,0.12);
+}
+
+.btn-wrap{
+  position:relative;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  margin-bottom:6px;
+  z-index:1;
+}
+
+/* circular ring around button */
+.ring{
+  position:absolute;
+  width:170px;
+  height:170px;
+  left:50%;
+  top:50%;
+  transform:translate(-50%,-50%) scale(0.95);
+  border-radius:50%;
+  pointer-events:none;
+  opacity:0;
+  z-index:0; /* sotto il bottone */
+  transition:opacity .18s ease, transform .18s ease;
+}
+.btn-wrap.active .ring{
+  opacity:1;
+  transform:translate(-50%,-50%) scale(1);
+  animation: ring-pulse 1200ms infinite linear;
+  box-shadow: 0 0 18px rgba(0,123,255,0.14), inset 0 0 20px rgba(0,123,255,0.04);
+  border: 2px solid rgba(0,123,255,0.18);
+  background: conic-gradient(rgba(0,123,255,0.10), rgba(51,153,255,0.04));
+}
+
+/* assicurati che il bottone sia sopra il ring */
+.btn-irrigare{
+  z-index:2;
+  position:relative;
+  width:140px;
+  height:140px;
+  border-radius:50%;
+  background:var(--accent);
+  color:var(--text);
+  border:none;
+  font-size:22px;
+  font-weight:700;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  box-shadow:0 6px 18px rgba(0,123,255,0.25);
+  -webkit-tap-highlight-color: transparent;
+  transition: transform 120ms ease, box-shadow 120ms ease, opacity 120ms ease;
+}
+.btn-irrigare:active{ transform: translateY(2px); }
+.btn-irrigare.active {
+  background: #0056b3;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.4);
+  opacity: 0.9;
+  pointer-events: none;
+}
+
+/* Time block */
+.time-block{
+  margin-top:10px;
+  display:flex;
+  gap:18px;
+  align-items:center;
+  justify-content:center;
+  flex-wrap:wrap;
+  background: rgba(255,255,255,0.02);
+  padding:10px 12px;
+  border-radius:10px;
+}
+
+.time-item{ display:flex; flex-direction:column; align-items:center; gap:8px; }
+
+/* etichette tempo più grandi e evidenti */
+.time-label{
+  color:var(--muted);
+  font-size:20px; /* aumentato */
+  font-weight:800; /* più marcato */
+}
+
+.time-value{
+  padding:12px 16px;
+  font-size:20px; /* aumentato */
+  border-radius:10px;
+  background:transparent;
+  color:var(--accent);
+  border:2px solid var(--accent);
+  font-weight:700;
+  cursor:pointer;
+}
+
+/* Next / progress */
+.next-block{
+  width:100%;
+  max-width:420px;
+  margin-top:14px;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:8px;
+}
+.next-text{
+  color:var(--text);
+  font-size:18px;
+  font-weight:700;
+}
+.progress{
+  width:90%;
+  height:10px;
+  background:rgba(255,255,255,0.05);
+  border-radius:10px;
+  overflow:hidden;
+  position:relative;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.02);
+  display:block;
+}
+.progress-bar{
+  height:100%;
+  background: linear-gradient(90deg,var(--accent), #3399ff);
+  width:100%;
+  margin:0 auto;            /* centra l'elemento */
+  transform-origin:center;  /* si riduce verso il centro */
+  transition: width 0.9s linear;
+  border-radius:10px;
+}
+
+.modal{ display:none; position:fixed; inset:0; align-items:center; justify-content:center; z-index:1000; }
+.modal.open{ display:flex; }
+.modal-backdrop{ position:absolute; inset:0; background:rgba(0,0,0,0.6); }
+.modal-panel{
+  position:relative;
+  width:calc(100% - 40px);
+  max-width:360px;
+  background:#111;
+  border-radius:12px;
+  padding:18px;
+  box-shadow:0 10px 30px rgba(0,0,0,0.6);
+  border:1px solid rgba(255,255,255,0.04);
+  z-index:1001;
+  text-align:center;
+}
+.modal-title{ margin:0 0 10px; font-size:18px; color:var(--text); font-weight:700; }
+.modal-body{ margin-bottom:14px; }
+.modal-body input{
+  width:140px;
+  padding:12px;
+  font-size:20px;
+  border-radius:8px;
+  border:2px solid rgba(255,255,255,0.06);
+  background:transparent;
+  color:var(--text);
+  text-align:center;
+}
+.modal-actions{ display:flex; gap:10px; justify-content:center; }
+.btn-save{ padding:10px 14px; border-radius:8px; background:transparent; color:var(--accent); border:2px solid var(--accent); font-weight:700; cursor:pointer; }
+.btn-cancel{ padding:10px 14px; border-radius:8px; background:transparent; color:#aaa; border:2px solid rgba(255,255,255,0.04); font-weight:700; cursor:pointer; }
+
+/* pulsanti Salva / Annulla più grandi nei modal */
+.modal-actions .btn-save,
+.modal-actions .btn-cancel {
+  padding:14px 18px;
+  font-size:16px;
+  min-width:120px;
+  border-radius:10px;
+  letter-spacing:0.3px;
+}
+
+/* su schermi piccoli rendili full-width e impilati */
+@media (max-width:420px){
+  .btn-irrigare{ width:120px; height:120px; font-size:20px; }
+  .sensor{ width:120px; padding:8px; border-radius:10px; }
+  .sensor .value{ font-size:28px; }
+  .sensor .icon{ font-size:18px; }
+  .sensor .label{ font-size:12px; }
+  .time-value{ font-size:16px; padding:10px; }
+  .modal-panel{ max-width:320px; padding:16px; }
+  .modal-body input{ width:120px; font-size:18px; }
+  .ring{ width:150px; height:150px; }
+  .next-text{ font-size:16px; }
+  .progress{ height:8px; }
+  .modal-actions{ flex-direction:column; width:100%; gap:8px; padding:0 8px; }
+  .modal-actions .btn-save,
+  .modal-actions .btn-cancel{
+    width:100%;
+    min-width:0;
+    padding:12px 14px;
+    font-size:16px;
+  }
+}
+
+/* sensori più compatti per stare affiancati */
+.sensor{
+  width:auto;
+  min-width:120px;
+  padding:8px 12px;
+}
+
+/* su schermi molto stretti permetti il wrap */
+@media (max-width:360px){
+  .sensors{ flex-wrap:wrap; gap:10px; }
+  .sensor{ flex:1 1 45%; min-width:110px; }
+}
