@@ -1,0 +1,11 @@
+.pio
+.pioenvs
+build
+.vscode
+.DS_Store
+
+# Secrets / credentials
+secrets.h
+
+# OS files
+*.log
